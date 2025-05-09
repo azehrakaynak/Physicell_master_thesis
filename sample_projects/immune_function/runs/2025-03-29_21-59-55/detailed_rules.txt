@@ -1,0 +1,19 @@
+Cell Hypothesis Rules (detailed)
+
+In tumor cell cells:
+damage increases apoptosis from 0 towards 9e+09 with a Hill response, with half-max 30 and Hill power 100.
+apoptotic increases apoptotic debris secretion from 0 towards 1 with a Hill response, with half-max 0.5 and Hill power 10. Rule applies to dead cells.
+necrotic increases necrotic debris secretion from 0 towards 1 with a Hill response, with half-max 0.5 and Hill power 10. Rule applies to dead cells.
+time decreases damage repair rate from 0.1 towards 0 with a Hill response, with half-max 15 and Hill power 10.
+
+In macrophage cells:
+
+In fast T cell cells:
+damage delivered increases transform to exhausted T cell from 0 towards 0.01 with a Hill response, with half-max 30 and Hill power 8.
+
+In slow T cell cells:
+
+In effector T cell cells:
+
+In exhausted T cell cells:
+

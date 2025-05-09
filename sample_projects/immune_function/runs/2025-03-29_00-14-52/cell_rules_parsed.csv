@@ -1,0 +1,5 @@
+tumor cell,damage,increases,apoptosis,9e+09,30,100,0
+tumor cell,apoptotic,increases,apoptotic debris secretion,1,0.5,10,1
+tumor cell,necrotic,increases,necrotic debris secretion,1,0.5,10,1
+tumor cell,time,decreases,damage repair rate,0,15,10,0
+fast T cell,damage delivered,increases,transform to exhausted T cell,0.01,30,8,0

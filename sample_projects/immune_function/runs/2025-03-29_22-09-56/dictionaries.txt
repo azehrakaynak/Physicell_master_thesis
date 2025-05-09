@@ -1,0 +1,255 @@
+Signals (with synonyms): 
+=======================
+4 : anti-inflammatory factor
+14 : anti-inflammatory factor gradient
+36 : apoptotic
+1 : apoptotic debris
+11 : apoptotic debris gradient
+31 : attacking
+28 : contact with BM
+25 : contact with apoptotic cell
+25 : contact with apoptotic cells
+28 : contact with basement membrane
+17 : contact with cell type 0
+18 : contact with cell type 1
+19 : contact with cell type 2
+20 : contact with cell type 3
+21 : contact with cell type 4
+22 : contact with cell type 5
+24 : contact with dead cell
+24 : contact with dead cells
+21 : contact with effector T cell
+22 : contact with exhausted T cell
+19 : contact with fast T cell
+23 : contact with live cell
+23 : contact with live cells
+18 : contact with macrophage
+26 : contact with necrotic cell
+26 : contact with necrotic cells
+27 : contact with other dead cell
+27 : contact with other dead cells
+20 : contact with slow T cell
+17 : contact with tumor cell
+34 : current time
+35 : custom 0
+35 : custom: sample
+35 : custom:sample
+29 : damage
+30 : damage delivered
+32 : dead
+0 : doxorubicin
+10 : doxorubicin gradient
+34 : global time
+14 : grad(anti-inflammatory factor)
+11 : grad(apoptotic debris)
+10 : grad(doxorubicin)
+12 : grad(necrotic debris)
+13 : grad(pro-inflammatory factor)
+14 : gradient of anti-inflammatory factor
+11 : gradient of apoptotic debris
+10 : gradient of doxorubicin
+12 : gradient of necrotic debris
+13 : gradient of pro-inflammatory factor
+9 : internalized anti-inflammatory factor
+6 : internalized apoptotic debris
+5 : internalized doxorubicin
+7 : internalized necrotic debris
+8 : internalized pro-inflammatory factor
+9 : intracellular anti-inflammatory factor
+6 : intracellular apoptotic debris
+5 : intracellular doxorubicin
+7 : intracellular necrotic debris
+8 : intracellular pro-inflammatory factor
+31 : is attacking
+32 : is dead
+36 : is_apoptotic
+37 : is_necrotic
+37 : necrotic
+2 : necrotic debris
+12 : necrotic debris gradient
+15 : pressure
+3 : pro-inflammatory factor
+13 : pro-inflammatory factor gradient
+34 : time
+33 : total attack time
+30 : total damage delivered
+16 : volume
+
+
+Behaviors (with synonyms): 
+=========================
+38 : adhesive affinity to cell type 0
+39 : adhesive affinity to cell type 1
+40 : adhesive affinity to cell type 2
+41 : adhesive affinity to cell type 3
+42 : adhesive affinity to cell type 4
+43 : adhesive affinity to cell type 5
+42 : adhesive affinity to effector T cell
+43 : adhesive affinity to exhausted T cell
+40 : adhesive affinity to fast T cell
+39 : adhesive affinity to macrophage
+41 : adhesive affinity to slow T cell
+38 : adhesive affinity to tumor cell
+19 : anti-inflammatory factor export
+4 : anti-inflammatory factor secretion
+9 : anti-inflammatory factor secretion saturation density
+9 : anti-inflammatory factor secretion target
+14 : anti-inflammatory factor uptake
+26 : apoptosis
+16 : apoptotic debris export
+1 : apoptotic debris secretion
+6 : apoptotic debris secretion saturation density
+6 : apoptotic debris secretion target
+11 : apoptotic debris uptake
+79 : asymmetric division to effector T cell
+80 : asymmetric division to exhausted T cell
+77 : asymmetric division to fast T cell
+76 : asymmetric division to macrophage
+78 : asymmetric division to slow T cell
+75 : asymmetric division to tumor cell
+57 : attack cell type 0
+58 : attack cell type 1
+59 : attack cell type 2
+60 : attack cell type 3
+61 : attack cell type 4
+62 : attack cell type 5
+92 : attack damage rate
+93 : attack duration
+61 : attack effector T cell
+62 : attack exhausted T cell
+59 : attack fast T cell
+58 : attack macrophage
+60 : attack slow T cell
+57 : attack tumor cell
+89 : cell attachment rate
+90 : cell detachment rate
+46 : cell-BM adhesion
+47 : cell-BM repulsion
+36 : cell-cell adhesion
+37 : cell-cell adhesion elastic constant
+45 : cell-cell repulsion
+46 : cell-membrane adhesion
+47 : cell-membrane repulsion
+35 : chemotactic response to anti-inflammatory factor
+32 : chemotactic response to apoptotic debris
+31 : chemotactic response to doxorubicin
+33 : chemotactic response to necrotic debris
+34 : chemotactic response to pro-inflammatory factor
+35 : chemotactic sensitivity to anti-inflammatory factor
+32 : chemotactic sensitivity to apoptotic debris
+31 : chemotactic sensitivity to doxorubicin
+33 : chemotactic sensitivity to necrotic debris
+34 : chemotactic sensitivity to pro-inflammatory factor
+81 : custom 0
+81 : custom: sample
+81 : custom:sample
+20 : cycle entry
+94 : damage rate
+95 : damage repair rate
+15 : doxorubicin export
+0 : doxorubicin secretion
+5 : doxorubicin secretion saturation density
+5 : doxorubicin secretion target
+10 : doxorubicin uptake
+20 : exit from cycle phase 0
+21 : exit from cycle phase 1
+22 : exit from cycle phase 2
+23 : exit from cycle phase 3
+24 : exit from cycle phase 4
+25 : exit from cycle phase 5
+63 : fuse to cell type 0
+64 : fuse to cell type 1
+65 : fuse to cell type 2
+66 : fuse to cell type 3
+67 : fuse to cell type 4
+68 : fuse to cell type 5
+67 : fuse to effector T cell
+68 : fuse to exhausted T cell
+65 : fuse to fast T cell
+64 : fuse to macrophage
+66 : fuse to slow T cell
+63 : fuse to tumor cell
+83 : immunogenicity to cell type 0
+84 : immunogenicity to cell type 1
+85 : immunogenicity to cell type 2
+86 : immunogenicity to cell type 3
+87 : immunogenicity to cell type 4
+88 : immunogenicity to cell type 5
+87 : immunogenicity to effector T cell
+88 : immunogenicity to exhausted T cell
+85 : immunogenicity to fast T cell
+84 : immunogenicity to macrophage
+86 : immunogenicity to slow T cell
+83 : immunogenicity to tumor cell
+82 : is movable
+82 : is_movable
+91 : maximum number of cell attachments
+29 : migration bias
+30 : migration persistence time
+28 : migration speed
+82 : movable
+27 : necrosis
+17 : necrotic debris export
+2 : necrotic debris secretion
+7 : necrotic debris secretion saturation density
+7 : necrotic debris secretion target
+12 : necrotic debris uptake
+48 : phagocytose apoptotic cell
+51 : phagocytose cell type 0
+52 : phagocytose cell type 1
+53 : phagocytose cell type 2
+54 : phagocytose cell type 3
+55 : phagocytose cell type 4
+56 : phagocytose cell type 5
+55 : phagocytose effector T cell
+56 : phagocytose exhausted T cell
+53 : phagocytose fast T cell
+52 : phagocytose macrophage
+49 : phagocytose necrotic cell
+50 : phagocytose other dead cell
+54 : phagocytose slow T cell
+51 : phagocytose tumor cell
+51 : phagocytosis of 0
+52 : phagocytosis of 1
+53 : phagocytosis of 2
+54 : phagocytosis of 3
+55 : phagocytosis of 4
+56 : phagocytosis of 5
+48 : phagocytosis of apoptotic cell
+48 : phagocytosis of apoptotic cells
+49 : phagocytosis of necrotic cell
+49 : phagocytosis of necrotic cells
+50 : phagocytosis of other dead cell
+50 : phagocytosis of other dead cells
+18 : pro-inflammatory factor export
+3 : pro-inflammatory factor secretion
+8 : pro-inflammatory factor secretion saturation density
+8 : pro-inflammatory factor secretion target
+13 : pro-inflammatory factor uptake
+44 : relative maximum adhesion distance
+69 : transform to cell type 0
+70 : transform to cell type 1
+71 : transform to cell type 2
+72 : transform to cell type 3
+73 : transform to cell type 4
+74 : transform to cell type 5
+73 : transform to effector T cell
+74 : transform to exhausted T cell
+71 : transform to fast T cell
+70 : transform to macrophage
+72 : transform to slow T cell
+69 : transform to tumor cell
+69 : transition to cell type 0
+70 : transition to cell type 1
+71 : transition to cell type 2
+72 : transition to cell type 3
+73 : transition to cell type 4
+74 : transition to cell type 5
+73 : transition to effector T cell
+74 : transition to exhausted T cell
+71 : transition to fast T cell
+70 : transition to macrophage
+72 : transition to slow T cell
+69 : transition to tumor cell
+
+
