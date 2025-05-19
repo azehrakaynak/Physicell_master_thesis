@@ -1,0 +1,216 @@
+Signals (with synonyms): 
+=======================
+33 : apoptotic
+19 : attacking
+16 : contact with BM
+13 : contact with apoptotic cell
+13 : contact with apoptotic cells
+16 : contact with basement membrane
+8 : contact with cell type 0
+9 : contact with cell type 1
+10 : contact with cell type 2
+12 : contact with dead cell
+12 : contact with dead cells
+10 : contact with immune
+11 : contact with live cell
+11 : contact with live cells
+14 : contact with necrotic cell
+14 : contact with necrotic cells
+15 : contact with other dead cell
+15 : contact with other dead cells
+9 : contact with resistant
+8 : contact with sensitive
+22 : current time
+23 : custom 0
+24 : custom 1
+25 : custom 2
+26 : custom 3
+27 : custom 4
+28 : custom 5
+29 : custom 6
+30 : custom 7
+31 : custom 8
+32 : custom 9
+27 : custom: attachment_lifetime
+28 : custom: attachment_rate
+25 : custom: elastic_coefficient
+26 : custom: kill_rate
+31 : custom: max_attachment_distance
+32 : custom: min_attachment_distance
+24 : custom: oncoprotein
+29 : custom: oncoprotein_saturation
+30 : custom: oncoprotein_threshold
+23 : custom: sample
+27 : custom:attachment_lifetime
+28 : custom:attachment_rate
+25 : custom:elastic_coefficient
+26 : custom:kill_rate
+31 : custom:max_attachment_distance
+32 : custom:min_attachment_distance
+24 : custom:oncoprotein
+29 : custom:oncoprotein_saturation
+30 : custom:oncoprotein_threshold
+23 : custom:sample
+17 : damage
+18 : damage delivered
+20 : dead
+22 : global time
+5 : grad(immunostimulatory factor)
+4 : grad(oxygen)
+5 : gradient of immunostimulatory factor
+4 : gradient of oxygen
+1 : immunostimulatory factor
+5 : immunostimulatory factor gradient
+3 : internalized immunostimulatory factor
+2 : internalized oxygen
+3 : intracellular immunostimulatory factor
+2 : intracellular oxygen
+19 : is attacking
+20 : is dead
+33 : is_apoptotic
+34 : is_necrotic
+34 : necrotic
+0 : oxygen
+4 : oxygen gradient
+6 : pressure
+22 : time
+21 : total attack time
+18 : total damage delivered
+7 : volume
+
+
+Behaviors (with synonyms): 
+=========================
+23 : adhesive affinity to cell type 0
+24 : adhesive affinity to cell type 1
+25 : adhesive affinity to cell type 2
+25 : adhesive affinity to immune
+24 : adhesive affinity to resistant
+23 : adhesive affinity to sensitive
+14 : apoptosis
+47 : asymmetric division to immune
+46 : asymmetric division to resistant
+45 : asymmetric division to sensitive
+36 : attack cell type 0
+37 : attack cell type 1
+38 : attack cell type 2
+65 : attack damage rate
+66 : attack duration
+38 : attack immune
+37 : attack resistant
+36 : attack sensitive
+62 : cell attachment rate
+63 : cell detachment rate
+28 : cell-BM adhesion
+29 : cell-BM repulsion
+21 : cell-cell adhesion
+22 : cell-cell adhesion elastic constant
+27 : cell-cell repulsion
+28 : cell-membrane adhesion
+29 : cell-membrane repulsion
+20 : chemotactic response to immunostimulatory factor
+19 : chemotactic response to oxygen
+20 : chemotactic sensitivity to immunostimulatory factor
+19 : chemotactic sensitivity to oxygen
+48 : custom 0
+49 : custom 1
+50 : custom 2
+51 : custom 3
+52 : custom 4
+53 : custom 5
+54 : custom 6
+55 : custom 7
+56 : custom 8
+57 : custom 9
+52 : custom: attachment_lifetime
+53 : custom: attachment_rate
+50 : custom: elastic_coefficient
+51 : custom: kill_rate
+56 : custom: max_attachment_distance
+57 : custom: min_attachment_distance
+49 : custom: oncoprotein
+54 : custom: oncoprotein_saturation
+55 : custom: oncoprotein_threshold
+48 : custom: sample
+52 : custom:attachment_lifetime
+53 : custom:attachment_rate
+50 : custom:elastic_coefficient
+51 : custom:kill_rate
+56 : custom:max_attachment_distance
+57 : custom:min_attachment_distance
+49 : custom:oncoprotein
+54 : custom:oncoprotein_saturation
+55 : custom:oncoprotein_threshold
+48 : custom:sample
+8 : cycle entry
+67 : damage rate
+68 : damage repair rate
+8 : exit from cycle phase 0
+9 : exit from cycle phase 1
+10 : exit from cycle phase 2
+11 : exit from cycle phase 3
+12 : exit from cycle phase 4
+13 : exit from cycle phase 5
+39 : fuse to cell type 0
+40 : fuse to cell type 1
+41 : fuse to cell type 2
+41 : fuse to immune
+40 : fuse to resistant
+39 : fuse to sensitive
+59 : immunogenicity to cell type 0
+60 : immunogenicity to cell type 1
+61 : immunogenicity to cell type 2
+61 : immunogenicity to immune
+60 : immunogenicity to resistant
+59 : immunogenicity to sensitive
+7 : immunostimulatory factor export
+1 : immunostimulatory factor secretion
+3 : immunostimulatory factor secretion saturation density
+3 : immunostimulatory factor secretion target
+5 : immunostimulatory factor uptake
+58 : is movable
+58 : is_movable
+64 : maximum number of cell attachments
+17 : migration bias
+18 : migration persistence time
+16 : migration speed
+58 : movable
+15 : necrosis
+6 : oxygen export
+0 : oxygen secretion
+2 : oxygen secretion saturation density
+2 : oxygen secretion target
+4 : oxygen uptake
+30 : phagocytose apoptotic cell
+33 : phagocytose cell type 0
+34 : phagocytose cell type 1
+35 : phagocytose cell type 2
+35 : phagocytose immune
+31 : phagocytose necrotic cell
+32 : phagocytose other dead cell
+34 : phagocytose resistant
+33 : phagocytose sensitive
+33 : phagocytosis of 0
+34 : phagocytosis of 1
+35 : phagocytosis of 2
+30 : phagocytosis of apoptotic cell
+30 : phagocytosis of apoptotic cells
+31 : phagocytosis of necrotic cell
+31 : phagocytosis of necrotic cells
+32 : phagocytosis of other dead cell
+32 : phagocytosis of other dead cells
+26 : relative maximum adhesion distance
+42 : transform to cell type 0
+43 : transform to cell type 1
+44 : transform to cell type 2
+44 : transform to immune
+43 : transform to resistant
+42 : transform to sensitive
+42 : transition to cell type 0
+43 : transition to cell type 1
+44 : transition to cell type 2
+44 : transition to immune
+43 : transition to resistant
+42 : transition to sensitive
+
+
