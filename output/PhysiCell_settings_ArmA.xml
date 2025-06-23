@@ -1,14 +1,14 @@
 <PhysiCell_settings version="devel-version">
 
     <domain>
-        <x_min>-1500</x_min>
-        <x_max>1500</x_max>
-        <y_min>-1500</y_min>
-        <y_max>1500</y_max>
+        <x_min>-10</x_min>
+        <x_max>10</x_max>
+        <y_min>-10</y_min>
+        <y_max>10</y_max>
         <z_min>-10</z_min>
         <z_max>10</z_max>
-        <dx>20</dx>
-        <dy>20</dy>
+        <dx>10</dx>
+        <dy>10</dy>
         <dz>20</dz>
         <use_2D>true</use_2D>
     </domain>
@@ -450,7 +450,7 @@
                 </cycle>
                 <death>
                     <model code="100" name="apoptosis">
-                        <death_rate units="1/min">0.01</death_rate>
+                        <death_rate units="1/min">0.0</death_rate>
                         <phase_durations units="min">
                             <duration index="0" fixed_duration="true">516</duration>
                         </phase_durations>
@@ -630,13 +630,13 @@
         <immune_relative_repulsion type="double" units="" description="">5</immune_relative_repulsion>
         <number_of_immune_cells type="int" units="" description="">1000</number_of_immune_cells>
         <initial_min_immune_distance_from_tumor type="double" units="" description="">20</initial_min_immune_distance_from_tumor>
-        <thickness_of_immune_seeding_region type="double" units="" description="">400</thickness_of_immune_seeding_region>
+        <thickness_of_immune_seeding_region type="double" units="" description="">150</thickness_of_immune_seeding_region>
         <tumor_radius type="double" units="" description="">1000</tumor_radius>
         <tumor_mean_immunogenicity type="double" units="" description="">1.0</tumor_mean_immunogenicity>
         <tumor_immunogenicity_standard_deviation type="double" units="" description="">1.0</tumor_immunogenicity_standard_deviation>
         <attach_rate type="double" units="" description="">0.1</attach_rate>
         <treatment type="bool" units="" description="">false</treatment>
-        <treatment_strength type="double" units="" description="">20</treatment_strength>
+        <treatment_strength type="double" units="" description="">30</treatment_strength>
         <chemo_start type="int" units="" description="">0</chemo_start>
         <chemo_end type="int" units="" description="">9999999</chemo_end>
         <immunotherapy_start type="int" units="" description="">999999</immunotherapy_start>

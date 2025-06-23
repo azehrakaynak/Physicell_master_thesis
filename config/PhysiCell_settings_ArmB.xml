@@ -1,20 +1,20 @@
 <PhysiCell_settings version="devel-version">
 
     <domain>
-        <x_min>-500</x_min>
-        <x_max>500</x_max>
-        <y_min>-500</y_min>
-        <y_max>500</y_max>
+        <x_min>-2000</x_min>
+        <x_max>2000</x_max>
+        <y_min>-2000</y_min>
+        <y_max>2000</y_max>
         <z_min>-10</z_min>
         <z_max>10</z_max>
-        <dx>20</dx>
-        <dy>20</dy>
-        <dz>20</dz>
+        <dx>40</dx>
+        <dy>40</dy>
+        <dz>40</dz>
         <use_2D>true</use_2D>
     </domain>
 
     <overall>
-        <max_time units="min">30000.0</max_time>
+        <max_time units="min">44400.0</max_time>
         <time_units>min</time_units>
         <space_units>micron</space_units>
         <dt_diffusion units="min">0.01</dt_diffusion>
@@ -23,17 +23,17 @@
     </overall>
 
     <parallel>
-        <omp_num_threads>6</omp_num_threads>
+        <omp_num_threads>8</omp_num_threads>
     </parallel>
 
     <save>
         <folder>output</folder>
         <full_data>
-            <interval units="min">300</interval>
+            <interval units="min">1200</interval>
             <enable>true</enable>
         </full_data>
         <SVG>
-            <interval units="min">300</interval>
+            <interval units="min">600</interval>
             <enable>true</enable>
             <plot_substrate enabled="false" limits="true">
                 <substrate>oxygen</substrate>
@@ -628,21 +628,21 @@
         <immune_o2_relative_uptake type="double" units="none" description="">0.1</immune_o2_relative_uptake>
         <immune_relative_adhesion type="double" units="" description="">0</immune_relative_adhesion>
         <immune_relative_repulsion type="double" units="" description="">5</immune_relative_repulsion>
-        <number_of_immune_cells type="int" units="" description="">150</number_of_immune_cells>
-        <initial_min_immune_distance_from_tumor type="double" units="" description="">10</initial_min_immune_distance_from_tumor>
-        <thickness_of_immune_seeding_region type="double" units="" description="">75</thickness_of_immune_seeding_region>
-        <tumor_radius type="double" units="" description="">160</tumor_radius>
+        <number_of_immune_cells type="int" units="" description="">1000</number_of_immune_cells>
+        <initial_min_immune_distance_from_tumor type="double" units="" description="">20</initial_min_immune_distance_from_tumor>
+        <thickness_of_immune_seeding_region type="double" units="" description="">150</thickness_of_immune_seeding_region>
+        <tumor_radius type="double" units="" description="">1000</tumor_radius>
         <tumor_mean_immunogenicity type="double" units="" description="">1.0</tumor_mean_immunogenicity>
         <tumor_immunogenicity_standard_deviation type="double" units="" description="">1.0</tumor_immunogenicity_standard_deviation>
         <attach_rate type="double" units="" description="">0.1</attach_rate>
         <treatment type="bool" units="" description="">false</treatment>
         <treatment_strength type="double" units="" description="">20</treatment_strength>
-        <chemo_start type="int" units="" description="">999999</chemo_start>
-        <chemo_end type="int" units="" description="">30000</chemo_end>
+        <chemo_start type="int" units="" description="">9999999</chemo_start>
+        <chemo_end type="int" units="" description="">9999999</chemo_end>
         <immunotherapy_start type="int" units="" description="">0</immunotherapy_start>
-        <immunotherapy_end type="int" units="" description="">15000</immunotherapy_end>
-        <early_switch_time type="int" units="" description="">999999</early_switch_time>
-        <progression_threshold type="int" units="" description="">330</progression_threshold>
+        <immunotherapy_end type="int" units="" description="">999999</immunotherapy_end>
+        <early_switch_time type="int" units="" description="">9999999</early_switch_time>
+        <progression_threshold type="int" units="" description="">100000</progression_threshold>
         <strategy type="string" units="" description="">ArmB</strategy>
     </user_parameters>
 </PhysiCell_settings>

@@ -233,18 +233,17 @@ void introduce_immune_cells( void )
 	int number_of_immune_cells =
 		parameters.ints("number_of_immune_cells"); // 7500; // 100; // 40;
 	double radius_inner = tumor_radius +
-		parameters.doubles("initial_min_immune_distance_from_tumor"); 30.0; // 75 // 50;
-	double radius_outer = radius_inner +
+		parameters.doubles("initial_min_immune_distance_from_tumor"); //30.0; // 75 // 50;
+	double thickness = 
 		parameters.doubles("thickness_of_immune_seeding_region"); // 75.0; // 100; // 1000 - 50.0;
 
-	double mean_radius = 0.5*(radius_inner + radius_outer);
-	double std_radius = 0.33*( radius_outer-radius_inner)/2.0;
 
 	for( int i=0 ;i < number_of_immune_cells ; i++ )
 	{
 		double theta = UniformRandom() * 6.283185307179586476925286766559;
 
-		double radius = NormalRandom( mean_radius, std_radius );
+		//double radius = NormalRandom( mean_radius, std_radius );
+		double radius = radius_inner + UniformRandom()* (thickness);
 
 		Cell* pCell = create_cell( *pImmuneCell );
 		pCell->assign_position( radius*cos(theta), radius*sin(theta), 0 );
@@ -319,7 +318,7 @@ void setup_tissue( void )
     // and set it to be a resistant cancer cell
     //bool converted = false;
     int counter = 0;
-    while (counter<10)
+    while (counter<50)
     {
         int resistant_cell_index = (int) (positions.size()*UniformRandom());
         pCell = (*all_cells)[resistant_cell_index];
@@ -432,13 +431,23 @@ std::vector<std::string> cancer_immune_coloring_function( Cell* pCell )
 		output[2] = "green";
 		//return output;
 	}
-	if( pCell->type == 2 )
+	if (pCell->type == 2) // immune cell
 	{
-		output[0] = "red";
-		output[1] = "red";
-		output[2] = "red";
+		if (PhysiCell_globals.current_time >= parameters.ints("immunotherapy_start")) {
+			// Immunotherapy ON → lighter red
+			output[0] = "rgb(255,100,100)";
+			output[1] = "rgb(255,100,100)";
+			output[2] = "rgb(200,80,80)";
+		}
+		else {
+			// Default immune color
+			output[0] = "red";
+			output[1] = "red";
+			output[2] = "red";
+		}
 		return output;
 	}
+
 
 	// if I'm under attack, color me
 	if( pCell->state.attached_cells.size() > 0 )
@@ -644,8 +653,33 @@ void immune_cell_rule( Cell* pCell, Phenotype& phenotype, double dt )
 {
 	static int attach_lifetime_i = pCell->custom_data.find_variable_index( "attachment_lifetime" );
 	if( phenotype.death.dead == true )
-	{
-		pCell->functions.custom_cell_rule = NULL;
+		{
+		// Estimate tumor radius
+		double tumor_radius = 50.0; // fallback
+		double max_r2 = 0.0;
+		for (Cell* c : *all_cells)
+		{
+			if (c->type == 0 || c->type == 1)
+			{
+				double r2 = norm_squared(c->position);
+				if (r2 > max_r2)
+					max_r2 = r2;
+			}
+		}
+		tumor_radius = sqrt(max_r2);
+		if (tumor_radius < 50.0) tumor_radius = 50.0;
+
+		// Get parameters from XML
+		double radius_inner = tumor_radius + parameters.doubles("initial_min_immune_distance_from_tumor");
+		double thickness = parameters.doubles("thickness_of_immune_seeding_region");
+
+		// Random placement in annular region
+		double theta = UniformRandom() * 2.0 * M_PI;
+		double radius = radius_inner + UniformRandom() * thickness;
+
+		Cell* newCell = create_cell(*pImmuneCell);
+		newCell->assign_position(radius * cos(theta), radius * sin(theta), 0.0);
+
 		return;
 	}
 
