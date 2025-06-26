@@ -318,18 +318,26 @@ void setup_tissue( void )
     // and set it to be a resistant cancer cell
     //bool converted = false;
     int counter = 0;
-    while (counter<50)
-    {
-        int resistant_cell_index = (int) (positions.size()*UniformRandom());
-        pCell = (*all_cells)[resistant_cell_index];
-        // if cells radial position < 150 convert to restistant cancer cell
-        if (sqrt(norm_squared(pCell->position)) < 140 && sqrt(norm_squared(pCell->position)) > 10)
-        {
-            pCell->convert_to_cell_definition(*pResistantCancerCell);
-      //      converted = true;
-	    counter++;
-        }
-    }
+	int attempts = 0;
+	static double res_imm_mean = 1.0;
+	static double res_imm_sd = 1.0;
+
+	while (counter < 200 && attempts < 1000)
+	{
+		attempts++;
+		int i = (int)(positions.size() * UniformRandom());
+		pCell = (*all_cells)[i];
+
+		double r = sqrt(norm_squared(pCell->position));
+		if (r > 10 && r < tumor_radius && pCell->type == 0)
+		{
+			pCell->convert_to_cell_definition(*pResistantCancerCell);
+			pCell->custom_data["oncoprotein"] = NormalRandom(res_imm_mean, res_imm_sd);
+			counter++;
+		
+		}
+	}
+
 	double sum = 0.0;
 	double min = 9e9;
 	double max = -9e9;
@@ -382,12 +390,37 @@ void tumor_cell_phenotype_with_and_immune_stimulation( Cell* pCell, Phenotype& p
 
 	// if cell is dead, don't bother with future phenotype changes.
 	// set it to secrete the immunostimulatory factor
-	if( phenotype.death.dead == true )
+	if (phenotype.death.dead == true)
 	{
+		static int apoptosis_index = phenotype.death.find_death_model_index(PhysiCell_constants::apoptosis_death_model);
+		static int necrosis_index = phenotype.death.find_death_model_index(PhysiCell_constants::necrosis_death_model);
+
+		std::string cause = "unknown";
+
+		if (pCell->phenotype.death.dead == true)
+		{
+			if (pCell->phenotype.death.current_death_model_index == apoptosis_index)
+				cause = "apoptosis";
+			else if (pCell->phenotype.death.current_death_model_index == necrosis_index)
+				cause = "necrosis";
+		}
+
+		if (pCell->type == 1) // resistant cell
+		{
+			std::ofstream logfile("resistant_deaths_log.txt", std::ios::app);
+			logfile << "Time: " << PhysiCell_globals.current_time
+					<< " | ID: " << pCell->ID
+					<< " | Position: (" << pCell->position[0] << "," << pCell->position[1] << ")"
+					<< " | Oncoprotein: " << pCell->custom_data["oncoprotein"]
+					<< " | Death Cause: " << cause << std::endl;
+			logfile.close();
+		}
+
 		phenotype.secretion.secretion_rates[immune_factor_index] = 10;
 		pCell->functions.update_phenotype = NULL;
 		return;
 	}
+
 
 	// multiply proliferation rate by the oncoprotein
 	//phenotype.cycle.data.transition_rate( cycle_start_index ,cycle_end_index ) *= pCell->custom_data[oncoprotein_i] ;
@@ -426,8 +459,8 @@ std::vector<std::string> cancer_immune_coloring_function( Cell* pCell )
 	}
 	if( pCell->type == 1 )
 	{
-		output[0] = "lime";
-		output[1] = "lime";
+		output[0] = "gold";
+		output[1] = "gold";
 		output[2] = "green";
 		//return output;
 	}

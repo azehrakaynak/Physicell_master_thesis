@@ -96,7 +96,9 @@ int main( int argc, char* argv[] )
 {
 	bool XML_status = false;
 	char copy_command[1024];
-	static int initial_tumor_cell_count = -1; // ✅ Declared here — only once
+	static int initial_tumor_cell_count = -1; 
+	static bool chemo_on = false;
+	static bool immuno_on = false;
 
 	if( argc > 1 )
 	{
@@ -126,13 +128,24 @@ int main( int argc, char* argv[] )
 	create_cell_types();
 	std::cout << "STEP 3: Setting up tissue" << std::endl;
 	setup_tissue();
+	if (parameters.strings("strategy") == "ArmB")
+	{
+		std::cout << "Starting ArmB strategy with immunotherapy ON" << std::endl;
+
+		immuno_on = true;
+		chemo_on = false;
+		parameters.bools("treatment") = false;  // No chemo yet
+
+		// Set immune cell sensitivity threshold
+		for (Cell* pCell : *all_cells)
+		{
+			if (pCell->type == 2)  // immune cells
+				pCell->custom_data["oncoprotein_threshold"] = 0.2;
+		}
+	}
+
 	
 	initial_tumor_cell_count = all_cells->size(); 
-
-
-
-	
-	initial_tumor_cell_count = all_cells->size();
 
 	char filename[1024];
 	sprintf(filename, "%s/initial", PhysiCell_settings.folder.c_str());
@@ -167,8 +180,7 @@ int main( int argc, char* argv[] )
 	          << PhysiCell_settings.max_time 
 	          << ", diffusion_dt = " << diffusion_dt << std::endl;
 
-	static bool chemo_on = false;
-	static bool immuno_on = false;
+	
 
 	const double min_progression_check_time = 100.0; // Prevent false trigger at t=0
 
@@ -225,7 +237,7 @@ int main( int argc, char* argv[] )
 				for (Cell* pCell : *all_cells)
 				{
 					if (pCell->type == 2)
-						pCell->custom_data["oncoprotein_threshold"] = 0.5;
+						pCell->custom_data["oncoprotein_threshold"] = 2.5;
 				}
 			}
 
