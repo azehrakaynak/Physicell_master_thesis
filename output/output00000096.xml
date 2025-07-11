@@ -26,17 +26,17 @@
 			<user />
 		</software>
 		<citation />
-		<current_time units="min">28799.999998</current_time>
-		<current_runtime units="sec">602.555042</current_runtime>
-		<created>2025-05-19T11:42:08Z</created>
-		<last_modified>2025-05-19T11:42:08Z</last_modified>
+		<current_time units="min">115199.999978</current_time>
+		<current_runtime units="sec">4376.349128</current_runtime>
+		<created>2025-06-24T12:54:04Z</created>
+		<last_modified>2025-06-24T12:54:04Z</last_modified>
 	</metadata>
 	<microenvironment>
 		<domain name="microenvironment">
-			<mesh type="Cartesian" uniform="true" regular="true" units="micron">
-				<bounding_box type="axis-aligned" units="micron">-500.000000 -500.000000 -10.000000 500.000000 500.000000 10.000000</bounding_box>
-				<x_coordinates delimiter=" ">-490 -470 -450 -430 -410 -390 -370 -350 -330 -310 -290 -270 -250 -230 -210 -190 -170 -150 -130 -110 -90 -70 -50 -30 -10 10 30 50 70 90 110 130 150 170 190 210 230 250 270 290 310 330 350 370 390 410 430 450 470 490</x_coordinates>
-				<y_coordinates delimiter=" ">-490 -470 -450 -430 -410 -390 -370 -350 -330 -310 -290 -270 -250 -230 -210 -190 -170 -150 -130 -110 -90 -70 -50 -30 -10 10 30 50 70 90 110 130 150 170 190 210 230 250 270 290 310 330 350 370 390 410 430 450 470 490</y_coordinates>
+			<mesh type="Cartesian" uniform="false" regular="true" units="micron">
+				<bounding_box type="axis-aligned" units="micron">-1500.000000 -1500.000000 -10.000000 1500.000000 1500.000000 10.000000</bounding_box>
+				<x_coordinates delimiter=" ">-1480 -1440 -1400 -1360 -1320 -1280 -1240 -1200 -1160 -1120 -1080 -1040 -1000 -960 -920 -880 -840 -800 -760 -720 -680 -640 -600 -560 -520 -480 -440 -400 -360 -320 -280 -240 -200 -160 -120 -80 -40 0 40 80 120 160 200 240 280 320 360 400 440 480 520 560 600 640 680 720 760 800 840 880 920 960 1000 1040 1080 1120 1160 1200 1240 1280 1320 1360 1400 1440 1480</x_coordinates>
+				<y_coordinates delimiter=" ">-1480 -1440 -1400 -1360 -1320 -1280 -1240 -1200 -1160 -1120 -1080 -1040 -1000 -960 -920 -880 -840 -800 -760 -720 -680 -640 -600 -560 -520 -480 -440 -400 -360 -320 -280 -240 -200 -160 -120 -80 -40 0 40 80 120 160 200 240 280 320 360 400 440 480 520 560 600 640 680 720 760 800 840 880 920 960 1000 1040 1080 1120 1160 1200 1240 1280 1320 1360 1400 1440 1480</y_coordinates>
 				<z_coordinates delimiter=" ">0</z_coordinates>
 				<voxels type="matlab">
 					<filename>initial_mesh0.mat</filename>
