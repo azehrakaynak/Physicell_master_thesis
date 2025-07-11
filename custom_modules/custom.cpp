@@ -140,6 +140,8 @@ void create_cell_types( void )
 	cell_defaults.functions.update_phenotype = NULL;
 	cell_defaults.functions.custom_cell_rule = NULL; 
 	cell_defaults.functions.contact_function = NULL; 
+	cell_defaults.parameters.o2_necrosis_threshold = 2;
+	cell_defaults.parameters.o2_necrosis_max = 1;
 	
 	cell_defaults.functions.add_cell_basement_membrane_interactions = NULL; 
 	cell_defaults.functions.calculate_distance_to_membrane = NULL; 
@@ -233,23 +235,35 @@ void introduce_immune_cells( void )
 	int number_of_immune_cells =
 		parameters.ints("number_of_immune_cells"); // 7500; // 100; // 40;
 	double radius_inner = tumor_radius +
-		parameters.doubles("initial_min_immune_distance_from_tumor"); 30.0; // 75 // 50;
-	double radius_outer = radius_inner +
+		parameters.doubles("initial_min_immune_distance_from_tumor"); //30.0; // 75 // 50;
+	double thickness = 
 		parameters.doubles("thickness_of_immune_seeding_region"); // 75.0; // 100; // 1000 - 50.0;
 
-	double mean_radius = 0.5*(radius_inner + radius_outer);
-	double std_radius = 0.33*( radius_outer-radius_inner)/2.0;
 
-	for( int i=0 ;i < number_of_immune_cells ; i++ )
+	for (int i = 0; i < number_of_immune_cells; i++)
 	{
-		double theta = UniformRandom() * 6.283185307179586476925286766559;
+		double x = 0.0, y = 0.0;
+		double theta, radius;
+		int max_attempts = 1000;
+		int attempts = 0;
 
-		double radius = NormalRandom( mean_radius, std_radius );
+		do {
+			theta = UniformRandom() * 2.0 * M_PI;
+			radius = radius_inner + UniformRandom() * thickness;
+			x = radius * cos(theta);
+			y = radius * sin(theta);
+			attempts++;
+		} while ((std::abs(x) > 2000 || std::abs(y) > 2000) && attempts < max_attempts);
 
-		Cell* pCell = create_cell( *pImmuneCell );
-		pCell->assign_position( radius*cos(theta), radius*sin(theta), 0 );
+		if (attempts >= max_attempts) {
+			std::cout << "Warning: Immune cell placement skipped after max attempts." << std::endl;
+			continue;
+		}
 
+		Cell* pCell = create_cell(*pImmuneCell);
+		pCell->assign_position(x, y, 0.0);
 	}
+
 
 	return;
 }
@@ -307,7 +321,12 @@ void setup_tissue( void )
 	{
 		pCell = create_cell(*pSensitiveCancerCell); // tumor cell
 		pCell->assign_position( positions[i] );
-		pCell->custom_data["oncoprotein"] = NormalRandom( imm_mean, imm_sd );
+		double value = -1.0;
+		while (value < 0)
+		{
+			value = NormalRandom(imm_mean, imm_sd); // or res_imm_mean, res_imm_sd
+		}
+		pCell->custom_data["oncoprotein"] = value;
 
 		if( pCell->custom_data["oncoprotein"] < 0.0 )
 		{ pCell->custom_data["oncoprotein"] = 0.0; }
@@ -319,18 +338,31 @@ void setup_tissue( void )
     // and set it to be a resistant cancer cell
     //bool converted = false;
     int counter = 0;
-    while (counter<10)
-    {
-        int resistant_cell_index = (int) (positions.size()*UniformRandom());
-        pCell = (*all_cells)[resistant_cell_index];
-        // if cells radial position < 150 convert to restistant cancer cell
-        if (sqrt(norm_squared(pCell->position)) < 140 && sqrt(norm_squared(pCell->position)) > 10)
-        {
-            pCell->convert_to_cell_definition(*pResistantCancerCell);
-      //      converted = true;
-	    counter++;
-        }
-    }
+	int attempts = 0;
+	static double res_imm_mean = 1.0;
+	static double res_imm_sd = 1.0;
+
+	while (counter < 500 && attempts < 1000)
+	{
+		attempts++;
+		int i = (int)(positions.size() * UniformRandom());
+		pCell = (*all_cells)[i];
+
+		double r = sqrt(norm_squared(pCell->position));
+		if (r > 10 && r < tumor_radius && pCell->type == 0)
+		{
+			pCell->convert_to_cell_definition(*pResistantCancerCell);
+			double value = -1.0;
+			while (value < 0)
+			{
+				value = NormalRandom(res_imm_mean, res_imm_sd); // or res_imm_mean, res_imm_sd
+			}
+			pCell->custom_data["oncoprotein"] = value;
+			counter++;
+		
+		}
+	}
+
 	double sum = 0.0;
 	double min = 9e9;
 	double max = -9e9;
@@ -383,12 +415,37 @@ void tumor_cell_phenotype_with_and_immune_stimulation( Cell* pCell, Phenotype& p
 
 	// if cell is dead, don't bother with future phenotype changes.
 	// set it to secrete the immunostimulatory factor
-	if( phenotype.death.dead == true )
+	if (phenotype.death.dead == true)
 	{
+		static int apoptosis_index = phenotype.death.find_death_model_index(PhysiCell_constants::apoptosis_death_model);
+		static int necrosis_index = phenotype.death.find_death_model_index(PhysiCell_constants::necrosis_death_model);
+
+		std::string cause = "unknown";
+
+		if (pCell->phenotype.death.dead == true)
+		{
+			if (pCell->phenotype.death.current_death_model_index == apoptosis_index)
+				cause = "apoptosis";
+			else if (pCell->phenotype.death.current_death_model_index == necrosis_index)
+				cause = "necrosis";
+		}
+
+		if (pCell->type == 1) // resistant cell
+		{
+			std::ofstream logfile("resistant_deaths_log.txt", std::ios::app);
+			logfile << "Time: " << PhysiCell_globals.current_time
+					<< " | ID: " << pCell->ID
+					<< " | Position: (" << pCell->position[0] << "," << pCell->position[1] << ")"
+					<< " | Oncoprotein: " << pCell->custom_data["oncoprotein"]
+					<< " | Death Cause: " << cause << std::endl;
+			logfile.close();
+		}
+
 		phenotype.secretion.secretion_rates[immune_factor_index] = 10;
 		pCell->functions.update_phenotype = NULL;
 		return;
 	}
+
 
 	// multiply proliferation rate by the oncoprotein
 	//phenotype.cycle.data.transition_rate( cycle_start_index ,cycle_end_index ) *= pCell->custom_data[oncoprotein_i] ;
@@ -427,18 +484,28 @@ std::vector<std::string> cancer_immune_coloring_function( Cell* pCell )
 	}
 	if( pCell->type == 1 )
 	{
-		output[0] = "lime";
-		output[1] = "lime";
+		output[0] = "gold";
+		output[1] = "gold";
 		output[2] = "green";
 		//return output;
 	}
-	if( pCell->type == 2 )
+	if (pCell->type == 2) // immune cell
 	{
-		output[0] = "red";
-		output[1] = "red";
-		output[2] = "red";
+		if (PhysiCell_globals.current_time >= parameters.ints("immunotherapy_start")) {
+			// Immunotherapy ON → lighter red
+			output[0] = "rgb(255,100,100)";
+			output[1] = "rgb(255,100,100)";
+			output[2] = "rgb(200,80,80)";
+		}
+		else {
+			// Default immune color
+			output[0] = "red";
+			output[1] = "red";
+			output[2] = "red";
+		}
 		return output;
 	}
+
 
 	// if I'm under attack, color me
 	if( pCell->state.attached_cells.size() > 0 )
@@ -644,8 +711,49 @@ void immune_cell_rule( Cell* pCell, Phenotype& phenotype, double dt )
 {
 	static int attach_lifetime_i = pCell->custom_data.find_variable_index( "attachment_lifetime" );
 	if( phenotype.death.dead == true )
-	{
-		pCell->functions.custom_cell_rule = NULL;
+		{
+		// Estimate tumor radius
+		double tumor_radius = 50.0; // fallback
+		double max_r2 = 0.0;
+		for (Cell* c : *all_cells)
+		{
+			if (c->type == 0 || c->type == 1)
+			{
+				double r2 = norm_squared(c->position);
+				if (r2 > max_r2)
+					max_r2 = r2;
+			}
+		}
+		tumor_radius = sqrt(max_r2);
+		if (tumor_radius < 50.0) tumor_radius = 50.0;
+
+		// Get parameters from XML
+		double radius_inner = tumor_radius + parameters.doubles("initial_min_immune_distance_from_tumor");
+		double thickness = parameters.doubles("thickness_of_immune_seeding_region");
+
+		// Random placement in annular region
+		double x = 0.0, y = 0.0;
+		double theta, radius;
+		int max_attempts = 1000;
+		int attempts = 0;
+
+		do {
+			theta = UniformRandom() * 2.0 * M_PI;
+			radius = radius_inner + UniformRandom() * thickness;
+			x = radius * cos(theta);
+			y = radius * sin(theta);
+			attempts++;
+		} while ((std::abs(x) > 2000 || std::abs(y) > 2000) && attempts < max_attempts);
+
+		if (attempts >= max_attempts) {
+			std::cout << "Warning: Respawned immune cell placement skipped after max attempts." << std::endl;
+			return;
+		}
+
+		Cell* newCell = create_cell(*pImmuneCell);
+		newCell->assign_position(x, y, 0.0);
+
+
 		return;
 	}
 
