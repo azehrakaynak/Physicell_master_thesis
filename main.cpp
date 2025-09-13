@@ -141,7 +141,7 @@ int main( int argc, char* argv[] )
 		for (Cell* pCell : *all_cells)
 		{
 			if (pCell->type == 2)  // immune cells
-				pCell->custom_data["oncoprotein_threshold"] = 1.0;
+				pCell->custom_data["oncoprotein_threshold"] = 0.5;
 		}
 	}
 
@@ -203,7 +203,7 @@ int main( int argc, char* argv[] )
 		if (PhysiCell_globals.current_time > min_progression_check_time &&
 			living_cancer_cells >= 102 * initial_tumor_cell_count)
 		{
-			tumor_has_progressed = false;
+			tumor_has_progressed = true;
 		}
 
 		bool arm_b_mode = (parameters.strings("strategy") == "ArmB");
@@ -271,7 +271,7 @@ int main( int argc, char* argv[] )
 			for (Cell* pCell : *all_cells)
 			{
 				if (pCell->type == 2)
-					pCell->custom_data["oncoprotein_threshold"] = 1.0;
+					pCell->custom_data["oncoprotein_threshold"] = 0.5;
 			}
 
 			immuno_on = true;
