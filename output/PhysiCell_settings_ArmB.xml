@@ -1,10 +1,10 @@
 <PhysiCell_settings version="devel-version">
 
     <domain>
-        <x_min>-2000</x_min>
-        <x_max>2000</x_max>
-        <y_min>-2000</y_min>
-        <y_max>2000</y_max>
+        <x_min>-1500</x_min>
+        <x_max>1500</x_max>
+        <y_min>-1500</y_min>
+        <y_max>1500</y_max>
         <z_min>-10</z_min>
         <z_max>10</z_max>
         <dx>40</dx>
@@ -104,7 +104,7 @@
             <phenotype>
                 <cycle code="5" name="live">
                     <phase_transition_rates units="1/min">
-                        <rate start_index="0" end_index="0" fixed_duration="false">0.0072</rate>
+                        <rate start_index="0" end_index="0" fixed_duration="false">0.0</rate>
                     </phase_transition_rates>
                     <standard_asymmetric_division enabled="False">
                         <asymmetric_division_probability name="sensitive" units="dimensionless">1.0</asymmetric_division_probability>
@@ -198,7 +198,7 @@
                     <substrate name="oxygen">
                         <secretion_rate units="1/min">0</secretion_rate>
                         <secretion_target units="substrate density">1</secretion_target>
-                        <uptake_rate units="1/min">1.5</uptake_rate>
+                        <uptake_rate units="1/min">5.0</uptake_rate>
                         <net_export_rate units="total substrate/min">0</net_export_rate>
                     </substrate>
                     <substrate name="immunostimulatory factor">
@@ -272,7 +272,7 @@
             <phenotype>
                 <cycle code="5" name="live">
                     <phase_transition_rates units="1/min">
-                        <rate start_index="0" end_index="0" fixed_duration="false">0.00072</rate>
+                        <rate start_index="0" end_index="0" fixed_duration="false">0.0</rate>
                     </phase_transition_rates>
                     <standard_asymmetric_division enabled="False">
                         <asymmetric_division_probability name="sensitive" units="dimensionless">0</asymmetric_division_probability>
@@ -366,7 +366,7 @@
                     <substrate name="oxygen">
                         <secretion_rate units="1/min">0</secretion_rate>
                         <secretion_target units="substrate density">1</secretion_target>
-                        <uptake_rate units="1/min">1.5</uptake_rate>
+                        <uptake_rate units="1/min">5.0</uptake_rate>
                         <net_export_rate units="total substrate/min">0</net_export_rate>
                     </substrate>
                     <substrate name="immunostimulatory factor">
@@ -412,7 +412,7 @@
             </phenotype>
             <custom_data>
                 <sample conserved="false" units="dimensionless" description="">1.0</sample>
-                <oncoprotein conserved="true" units="" description="">1.0</oncoprotein>
+                <oncoprotein conserved="false" units="" description="">1.0</oncoprotein>
                 <elastic_coefficient conserved="false" units="" description="">0.01</elastic_coefficient>
                 <kill_rate conserved="false" units="" description="">0.06667</kill_rate>
                 <attachment_lifetime conserved="false" units="" description="">60</attachment_lifetime>
@@ -504,7 +504,7 @@
                         <set_absolute_equilibrium_distance enabled="false" units="micron">15.12</set_absolute_equilibrium_distance>
                     </options>
                     <attachment_elastic_constant units="1/min">0.01</attachment_elastic_constant>
-                    <attachment_rate units="1/min">0.0</attachment_rate>
+                    <attachment_rate units="1/min">0.02</attachment_rate>
                     <detachment_rate units="1/min">0.0</detachment_rate>
                     <maximum_number_of_attachments>12</maximum_number_of_attachments>
                 </mechanics>
@@ -525,7 +525,7 @@
                             <normalize_each_gradient>false</normalize_each_gradient>
                             <chemotactic_sensitivities>
                                 <chemotactic_sensitivity substrate="oxygen">0.0</chemotactic_sensitivity>
-                                <chemotactic_sensitivity substrate="immunostimulatory factor">0.0</chemotactic_sensitivity>
+                                <chemotactic_sensitivity substrate="immunostimulatory factor">1.0</chemotactic_sensitivity>
                             </chemotactic_sensitivities>
                         </advanced_chemotaxis>
                     </options>
@@ -628,10 +628,10 @@
         <immune_o2_relative_uptake type="double" units="none" description="">0.1</immune_o2_relative_uptake>
         <immune_relative_adhesion type="double" units="" description="">0</immune_relative_adhesion>
         <immune_relative_repulsion type="double" units="" description="">5</immune_relative_repulsion>
-        <number_of_immune_cells type="int" units="" description="">3000</number_of_immune_cells>
+        <number_of_immune_cells type="int" units="" description="">400</number_of_immune_cells>
         <initial_min_immune_distance_from_tumor type="double" units="" description="">20</initial_min_immune_distance_from_tumor>
-        <thickness_of_immune_seeding_region type="double" units="" description="">400</thickness_of_immune_seeding_region>
-        <tumor_radius type="double" units="" description="">1000</tumor_radius>
+        <thickness_of_immune_seeding_region type="double" units="" description="">300</thickness_of_immune_seeding_region>
+        <tumor_radius type="double" units="" description="">850</tumor_radius>
         <tumor_mean_immunogenicity type="double" units="" description="">1.0</tumor_mean_immunogenicity>
         <tumor_immunogenicity_standard_deviation type="double" units="" description="">1.0</tumor_immunogenicity_standard_deviation>
         <attach_rate type="double" units="" description="">1.0</attach_rate>
@@ -639,7 +639,7 @@
         <treatment_strength type="double" units="" description="">0</treatment_strength>
         <chemo_start type="int" units="" description="">9999999</chemo_start>
         <chemo_end type="int" units="" description="">9999999</chemo_end>
-        <immunotherapy_start type="int" units="" description="">9999999</immunotherapy_start>
+        <immunotherapy_start type="int" units="" description="">0</immunotherapy_start>
         <immunotherapy_end type="int" units="" description="">999999</immunotherapy_end>
         <early_switch_time type="int" units="" description="">9999999</early_switch_time>
         <progression_threshold type="int" units="" description="">100000</progression_threshold>

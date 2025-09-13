@@ -342,7 +342,7 @@ void setup_tissue( void )
 	static double res_imm_mean = 1.0;
 	static double res_imm_sd = 1.0;
 
-	while (counter < 500 && attempts < 1000)
+	while (counter < 200 && attempts < 1000)
 	{
 		attempts++;
 		int i = (int)(positions.size() * UniformRandom());
