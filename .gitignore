@@ -7,3 +7,25 @@ output/
 .DS_Store
 *.log
 *.bak
+# Simulation outputs
+output/*
+*.mat
+*.svg
+*.png
+*.log
+
+# HPC job files
+*.o
+*.e
+slurm-*
+
+# Build artifacts
+*.out
+*.exe
+*.so
+*.a
+*.dSYM/
+*.o
+
+# OS
+.DS_Store
