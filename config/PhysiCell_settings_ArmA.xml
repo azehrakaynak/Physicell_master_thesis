@@ -450,7 +450,7 @@
                 </cycle>
                 <death>
                     <model code="100" name="apoptosis">
-                        <death_rate units="1/min">0.9</death_rate>
+                        <death_rate units="1/min">0.003</death_rate>
                         <phase_durations units="min">
                             <duration index="0" fixed_duration="true">516</duration>
                         </phase_durations>
@@ -504,12 +504,12 @@
                         <set_absolute_equilibrium_distance enabled="false" units="micron">15.12</set_absolute_equilibrium_distance>
                     </options>
                     <attachment_elastic_constant units="1/min">0.01</attachment_elastic_constant>
-                    <attachment_rate units="1/min">0.0</attachment_rate>
+                    <attachment_rate units="1/min">0.02</attachment_rate>
                     <detachment_rate units="1/min">0.0</detachment_rate>
                     <maximum_number_of_attachments>12</maximum_number_of_attachments>
                 </mechanics>
                 <motility>
-                    <speed units="micron/min">1.1</speed>
+                    <speed units="micron/min">0.5</speed>
                     <persistence_time units="min">1</persistence_time>
                     <migration_bias units="dimensionless">.2</migration_bias>
                     <options>
@@ -534,7 +534,7 @@
                     <substrate name="oxygen">
                         <secretion_rate units="1/min">0</secretion_rate>
                         <secretion_target units="substrate density">1</secretion_target>
-                        <uptake_rate units="1/min">5.0</uptake_rate>
+                        <uptake_rate units="1/min">1.5</uptake_rate>
                         <net_export_rate units="total substrate/min">0</net_export_rate>
                     </substrate>
                     <substrate name="immunostimulatory factor">
@@ -628,11 +628,13 @@
         <immune_o2_relative_uptake type="double" units="none" description="">0.1</immune_o2_relative_uptake>
         <immune_relative_adhesion type="double" units="" description="">0</immune_relative_adhesion>
         <immune_relative_repulsion type="double" units="" description="">5</immune_relative_repulsion>
-        <number_of_immune_cells type="int" units="" description="">0</number_of_immune_cells>
+        <number_of_immune_cells type="int" units="" description="">500</number_of_immune_cells>
         <initial_min_immune_distance_from_tumor type="double" units="" description="">20</initial_min_immune_distance_from_tumor>
-        <thickness_of_immune_seeding_region type="double" units="" description="">50</thickness_of_immune_seeding_region>
-	<immune_respawn_extra_distance type="double" units="" description="">100</immune_respawn_extra_distance>
-        <tumor_radius type="double" units="" description="">1000</tumor_radius>
+        <thickness_of_immune_seeding_region type="double" units="" description="">200</thickness_of_immune_seeding_region>
+	<tumor_radius type="double" units="" description="">850</tumor_radius>
+        <respawn_outer_radius type="double" units="" description="">1200</respawn_outer_radius>
+        <respawn_offset type="double" units="" description="">30</respawn_offset>
+        <respawn_band  type="double" units="" description="">50</respawn_band >
         <tumor_mean_immunogenicity type="double" units="" description="">1.0</tumor_mean_immunogenicity>
         <tumor_immunogenicity_standard_deviation type="double" units="" description="">1.0</tumor_immunogenicity_standard_deviation>
         <attach_rate type="double" units="" description="">1.0</attach_rate>

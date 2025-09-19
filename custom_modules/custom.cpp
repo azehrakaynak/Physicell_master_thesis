@@ -72,48 +72,47 @@ Cell_Definition* pResistantCancerCell;
 Cell_Definition* pSensitiveCancerCell;
 
 
-void create_immune_cell_type( void )
+void create_immune_cell_type(void)
 {
-	pImmuneCell = find_cell_definition( "immune" );
+    pImmuneCell = find_cell_definition("immune");
 
-	static int oxygen_ID = microenvironment.find_density_index( "oxygen" );
-	static int immuno_ID = microenvironment.find_density_index( "immunostimulatory factor" );
+    static int oxygen_ID = microenvironment.find_density_index("oxygen");
+    static int immuno_ID = microenvironment.find_density_index("immunostimulatory factor");
 
-	// reduce o2 uptake
+    // reduce o2 uptake
+    pImmuneCell->phenotype.secretion.uptake_rates[oxygen_ID] *=
+        parameters.doubles("immune_o2_relative_uptake");
 
-	pImmuneCell->phenotype.secretion.uptake_rates[oxygen_ID] *=
-		parameters.doubles("immune_o2_relative_uptake");
+    pImmuneCell->phenotype.mechanics.cell_cell_adhesion_strength *=
+        parameters.doubles("immune_relative_adhesion");
+    pImmuneCell->phenotype.mechanics.cell_cell_repulsion_strength *=
+        parameters.doubles("immune_relative_repulsion");
 
-	pImmuneCell->phenotype.mechanics.cell_cell_adhesion_strength *=
-		parameters.doubles("immune_relative_adhesion");
-	pImmuneCell->phenotype.mechanics.cell_cell_repulsion_strength *=
-		parameters.doubles("immune_relative_repulsion");
+    pImmuneCell->phenotype.mechanics.relative_maximum_attachment_distance =
+        pImmuneCell->custom_data["max_attachment_distance"] / pImmuneCell->phenotype.geometry.radius;
 
-	// figure out mechanics parameters
+    pImmuneCell->phenotype.mechanics.attachment_elastic_constant =
+        pImmuneCell->custom_data["elastic_coefficient"];
 
-	pImmuneCell->phenotype.mechanics.relative_maximum_attachment_distance
-		= pImmuneCell->custom_data["max_attachment_distance"] / pImmuneCell->phenotype.geometry.radius ;
+    pImmuneCell->phenotype.mechanics.relative_detachment_distance =
+        pImmuneCell->custom_data["max_attachment_distance"] / pImmuneCell->phenotype.geometry.radius;
 
-	pImmuneCell->phenotype.mechanics.attachment_elastic_constant
-		= pImmuneCell->custom_data["elastic_coefficient"];
+    pImmuneCell->custom_data["squeezability"] = 0.0;
 
-	pImmuneCell->phenotype.mechanics.relative_detachment_distance
-		= pImmuneCell->custom_data["max_attachment_distance" ] / pImmuneCell->phenotype.geometry.radius ;
-	pImmuneCell->custom_data["squeezability"] = 0.0;
-	// set functions
+    // set functions
+    pImmuneCell->functions.update_phenotype = NULL;
+    pImmuneCell->functions.custom_cell_rule = immune_cell_rule;
+    pImmuneCell->functions.update_migration_bias = immune_cell_motility;
+    pImmuneCell->functions.contact_function = adhesion_contact_function;
 
-	pImmuneCell->functions.update_phenotype = NULL;
-	pImmuneCell->functions.custom_cell_rule = immune_cell_rule;
-	pImmuneCell->functions.update_migration_bias = immune_cell_motility;
-	pImmuneCell->functions.contact_function = adhesion_contact_function;
+    // base apoptosis (low, but non-zero)
+    static int apoptosis_model_index =
+        pImmuneCell->phenotype.death.find_death_model_index(PhysiCell_constants::apoptosis_death_model);
+    pImmuneCell->phenotype.death.rates[apoptosis_model_index] = 1e-6;
 
-	static int apoptosis_model_index = pImmuneCell->phenotype.death.find_death_model_index(PhysiCell_constants::apoptosis_death_model);
-	pImmuneCell->phenotype.death.rates[apoptosis_model_index] = 0.;
-
-	// set custom data values
-
-	return;
+    return;
 }
+
 
 void create_cell_types( void )
 {
@@ -695,113 +694,86 @@ bool immune_cell_attempt_apoptosis( Cell* pAttacker, Cell* pTarget, double dt )
 	return false;
 }
 
-bool immune_cell_trigger_apoptosis( Cell* pAttacker, Cell* pTarget )
+bool immune_cell_trigger_apoptosis(Cell* pAttacker, Cell* pTarget)
 {
-	static int apoptosis_model_index = pTarget->phenotype.death.find_death_model_index( "apoptosis" );
+    static int apoptosis_model_index =
+        pTarget->phenotype.death.find_death_model_index("apoptosis");
 
-	// if the Target cell is already dead, don't bother!
-	if( pTarget->phenotype.death.dead == true )
-	{ return false; }
+    if (pTarget->phenotype.death.dead == true)
+        return false;
 
-	pTarget->start_death( apoptosis_model_index );
-	return true;
+    // kill the tumor cell
+    pTarget->start_death(apoptosis_model_index);
+
+    // boost tumor cell apoptosis speed 10x
+    pTarget->phenotype.death.rates[apoptosis_model_index] *= 10.0;
+
+    return true;
 }
 
-void immune_cell_rule( Cell* pCell, Phenotype& phenotype, double dt )
+
+void immune_cell_rule(Cell* pCell, Phenotype& phenotype, double dt)
 {
-	static int attach_lifetime_i = pCell->custom_data.find_variable_index( "attachment_lifetime" );
-	if( phenotype.death.dead == true )
-		{
-		// Estimate tumor radius
-		double tumor_radius = 50.0; // fallback
-		double max_r2 = 0.0;
-		for (Cell* c : *all_cells)
-		{
-			if (c->type == 0 || c->type == 1)
-			{
-				double r2 = norm_squared(c->position);
-				if (r2 > max_r2)
-					max_r2 = r2;
-			}
-		}
-		tumor_radius = sqrt(max_r2);
-		if (tumor_radius < 50.0) tumor_radius = 50.0;
+    static int attach_lifetime_i = pCell->custom_data.find_variable_index("attachment_lifetime");
 
-		// Get parameters from XML
-		double radius_inner = tumor_radius + parameters.doubles("initial_min_immune_distance_from_tumor");
-		double thickness = parameters.doubles("thickness_of_immune_seeding_region");
+    // --- Respawn logic ---
+    if (phenotype.death.dead == true)
+    {
+        // Spawn new immune cell outside the initial shell
+        double base_radius    = parameters.doubles("respawn_outer_radius");
+        double respawn_offset = parameters.doubles("respawn_offset");
+        double respawn_band   = parameters.doubles("respawn_band");
 
-		// Random placement in annular region
-		double x = 0.0, y = 0.0;
-		double theta, radius;
-		int max_attempts = 1000;
-		int attempts = 0;
+        double theta  = UniformRandom() * 2.0 * M_PI;
+        double radius = base_radius + respawn_offset + UniformRandom() * respawn_band;
+        double x = radius * cos(theta);
+        double y = radius * sin(theta);
 
-		do {
-			theta = UniformRandom() * 2.0 * M_PI;
-			radius = radius_inner + UniformRandom() * thickness;
-			x = radius * cos(theta);
-			y = radius * sin(theta);
-			attempts++;
-		} while ((std::abs(x) > 2000 || std::abs(y) > 2000) && attempts < max_attempts);
+        Cell* newCell = create_cell(*pImmuneCell);
+        newCell->assign_position(x, y, 0.0);
 
-		if (attempts >= max_attempts) {
-			std::cout << "Warning: Respawned immune cell placement skipped after max attempts." << std::endl;
-			return;
-		}
+        // --- Remove the dead immune cell completely ---
+        delete_cell(pCell);
 
-		Cell* newCell = create_cell(*pImmuneCell);
-		newCell->assign_position(x, y, 0.0);
+        return;
+    }
 
+    // --- If attached ---
+    if (pCell->state.number_of_attached_cells() > 0)
+    {
+        bool detach_me = false;
 
-		return;
-	}
+        if (immune_cell_attempt_apoptosis(pCell, pCell->state.attached_cells[0], dt))
+        {
+            immune_cell_trigger_apoptosis(pCell, pCell->state.attached_cells[0]);
+            detach_me = true;
+        }
 
-	// if I'm docked
-	if( pCell->state.number_of_attached_cells() > 0 )
-	{
-		// attempt to kill my attached cell
+        if (UniformRandom() < dt / (pCell->custom_data[attach_lifetime_i] + 1e-15))
+            detach_me = true;
 
-		bool detach_me = false;
+        if (detach_me)
+        {
+            detach_cells(pCell, pCell->state.attached_cells[0]);
+            phenotype.motility.is_motile = true;
+        }
+        return;
+    }
 
-		// make attempt to kill rarer event by adding random
-		// probability of detachment
+    // --- If not attached, look for neighbors ---
+    if (UniformRandom() < parameters.doubles("attach_rate"))
+    {
+        if (immune_cell_check_neighbors_for_attachment(pCell, dt))
+        {
+            phenotype.motility.is_motile = false;
+            return;
+        }
+    }
 
-            if( immune_cell_attempt_apoptosis( pCell, pCell->state.attached_cells[0], dt ) )
-            {
-                immune_cell_trigger_apoptosis( pCell, pCell->state.attached_cells[0] );
-                detach_me = true;
-            }
-
-		if( UniformRandom() < dt / ( pCell->custom_data[attach_lifetime_i] + 1e-15 ) )
-		{ detach_me = true; }
-
-		// if I dettach, resume motile behavior
-
-		if( detach_me )
-		{
-			detach_cells( pCell, pCell->state.attached_cells[0] );
-			phenotype.motility.is_motile = true;
-		}
-		return;
-	}
-
-	// I'm not docked, look for cells nearby and try to docked
-
-	// if this returns non-NULL, we're now attached to a cell
-	if ( UniformRandom() < parameters.doubles("attach_rate")){
-	if( immune_cell_check_neighbors_for_attachment( pCell , dt) )
-	{
-		// set motility off
-		phenotype.motility.is_motile = false;
-		return;
-	}
-	}
-	phenotype.motility.is_motile = true;
-	static int apoptosis_model_index = phenotype.death.find_death_model_index(PhysiCell_constants::apoptosis_death_model);
-
-	return;
+    phenotype.motility.is_motile = true;
+    return;
 }
+
 
 void adhesion_contact_function( Cell* pActingOn, Phenotype& pao, Cell* pAttachedTo, Phenotype& pat , double dt )
 {

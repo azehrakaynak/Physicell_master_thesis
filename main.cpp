@@ -201,7 +201,7 @@ int main( int argc, char* argv[] )
 		// Define progression dynamically
 		bool tumor_has_progressed = false;
 		if (PhysiCell_globals.current_time > min_progression_check_time &&
-			living_cancer_cells >= 102 * initial_tumor_cell_count)
+			living_cancer_cells >= 1.1 * initial_tumor_cell_count)
 		{
 			tumor_has_progressed = true;
 		}
@@ -254,11 +254,20 @@ int main( int argc, char* argv[] )
 		// Switch chemo off due to progression
 		if (chemo_on && tumor_has_progressed)
 		{
-			std::cout << "Chemo OFF due to progression at " << PhysiCell_globals.current_time << std::endl;
-			parameters.bools("treatment") = false;
-			chemo_on = false;
+			// For ArmA: allow switching back to immunotherapy
+			if (parameters.strings("strategy") == "ArmA")
+			{
+				std::cout << "Chemo OFF due to progression at "
+						  << PhysiCell_globals.current_time << std::endl;
+				parameters.bools("treatment") = false;
+				chemo_on = false;
+			}
+			// For ArmB: ignore progression, chemo stays on
+			else if (parameters.strings("strategy") == "ArmB")
+			{
+				// Do nothing: chemo continues
+			}
 		}
-
 
 		// --- Immunotherapy logic ---
 		if (!immuno_on && !chemo_on && tumor_has_progressed)

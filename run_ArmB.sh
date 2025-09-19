@@ -10,7 +10,7 @@
 module load gcc/12 openmpi/4
 
 echo "Starting ArmA simulation at $(date)"
-./project config/PhysiCell_settings_ArmB.xml
+./project config/PhysiCell_settings_ArmA.xml
 
 echo "Finished both simulations at $(date)"
 
